@@ -2,6 +2,7 @@
 
 Demo Credit is a mobile lending app that has wallet functionality. It is used by borrowers who need a wallet to receive the loans they have been granted and also send the money for repayments.
 
+
 ## Setup
 
 This section will guide you through the setup process required to get up and running with the application.
@@ -27,10 +28,35 @@ This section will guide you through the setup process required to get up and run
 3. Create a `.env` file and copy the content of `.env.example` to it.
 
 
+### Generating Oauth Keys for JWT
+1. Run `mkdir ./src/config/keys` to create the keys folder.
+
+2. Run `openssl genrsa -out ./src/config/keys/oauth-private.key 2048` to generate an oauth private key.
+
+3. Run `openssl rsa -pubout -in ./src/config/keys/oauth-private.key -out ./src/config/keys/oauth-public.key` to generate a corresponding oauth public key
+
+4. Set `./src/config/keys/oauth-private.key` as the value of `OAUTH_PRIVATE_KEY` environment variable
+
+5. Set `./src/config/keys/oauth-public.key` as the value of `OAUTH_PUBLIC_KEY` environment variable
+
+
+### Database Setup
+
+1. Create a new database in mysql
+
+2. Fill the `.env` file you created with the database credentials
+
+3. Run `npm run make:migration` to create migration files, e.g `npm run make:migration create_users_table`
+
+4. Run `npm run migrate` to run the migrations and create the tables
+
+5. You can run `npm run migrate:undo` to undo the migrations
+
+
 ### Development
 
 To run the application, use the command: `npm run start`
 
-Use `development` or `staging` as your node environment
+Use `development` as your node environment
 
 It is important to set up environment variables for the system to function properly

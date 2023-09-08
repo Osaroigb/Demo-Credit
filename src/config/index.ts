@@ -15,7 +15,7 @@ const config = convict({
     format: 'port'
   },
   baseUrl: {
-    default: "https://osaro-igbinovia-lendsqr-be-test.<cloud-platform-domain>", 
+    default: "https://osaro-igbinovia-lendsqr-be-test.vercel.app", 
     doc: 'App base url',
     env: 'APP_BASE_URL',
     nullable: false,
@@ -73,7 +73,30 @@ const config = convict({
     dialect: {
       default: "mysql",
     }
-  }
+  },
+  jwt: {
+    expiry: {
+      default: 7200,
+      doc: 'JWT expiry in seconds',
+      env: 'JWT_EXPIRY_IN_SECONDS',
+      nullable: true,
+      format: Number
+    },
+    privateKey: {
+      default: "./src/config/keys/oauth-private.key",
+      doc: 'OAuth private key',
+      env: 'OAUTH_PRIVATE_KEY',
+      nullable: false,
+      format: String
+    },
+    publicKey: {
+      default: "./src/config/keys/oauth-public.key",
+      doc: 'OAuth public key',
+      env: 'OAUTH_PUBLIC_KEY',
+      nullable: false,
+      format: String
+    }
+  },
 });
 
 // Perform validation

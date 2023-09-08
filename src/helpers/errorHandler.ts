@@ -1,14 +1,7 @@
 import { Response } from 'express';
-// import { logger } from '../utils/logger';
 import DomainError from '../errors/DomainError';
 
 export const handleError = (error: Error, responseStream?: Response): void | Response => {
-  
-  // if (error instanceof ValidationError) {
-  //   logger.error('[Database Validation Error] => ', error);
-  // } else {
-  //   logger.error('[Unhandled Error] => ', error);
-  // }
 
   if (responseStream) {
     if (error instanceof DomainError) {
