@@ -10,7 +10,7 @@ exports.up = function(knex) {
     table.string("email").notNullable();
     table.string("password").notNullable();
     table.string("phoneNumber").notNullable();
-    table.integer("accountNumber").unsigned().notNullable();
+    table.bigInteger("accountNumber").unsigned().notNullable();
     table.timestamps(true, true);
   });
 };

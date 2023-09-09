@@ -34,10 +34,10 @@ export const processSignup = async (data: ProcessSignupParams): Promise<Response
   })
   .catch((error: any) => {
     logger.error('Error creating user:', error);
-    throw new BadRequestError(error);
+    throw new BadRequestError(`Error creating user: ${error}`);
   })
   .finally(() => {
-    db.destroy(); // ensure the knex connection is closed
+    db.destroy();
   });
 
   return {
@@ -59,24 +59,22 @@ export const processLogin = async (email: string, password: string): Promise<Res
     throw new UnAuthorizedError('Email is incorrect!');
   }
 
-  const isValidPassword = await isHashValid(password, user.password as string);
+  const isValidPassword = await isHashValid(password, user[0].password as string);
 
   if (!isValidPassword) {
     throw new UnAuthorizedError('Password is incorrect!');
   }
   
-  // await userRepo.update({ lastLoginAt: new Date() }, { where: { id: user.id } }); // TODO: update users table
-
   const jwt = generateJwt({
     data: {
       user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
+        id: user[0].id,
+        firstName: user[0].firstName,
+        lastName: user[0].lastName,
+        email: user[0].email
       }
     },
-    sub: user.id.toString()
+    sub: user[0].id.toString()
   });
 
   return {
@@ -88,13 +86,13 @@ export const processLogin = async (email: string, password: string): Promise<Res
         ...jwt
       },
       user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        accountNumber: user.accountNumber,
-        createdAt: user.createdAt
+        id: user[0].id,
+        firstName: user[0].firstName,
+        lastName: user[0].lastName,
+        email: user[0].email,
+        phone: user[0].phone,
+        accountNumber: user[0].accountNumber,
+        createdAt: user[0].createdAt
       }
     }
   };
