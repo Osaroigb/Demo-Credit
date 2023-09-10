@@ -1,3 +1,7 @@
+export interface User {
+  [key:string]: any
+};
+
 export  interface ResponseProps {
   canLogin?: boolean;
   message: string;

@@ -42,7 +42,7 @@ This section will guide you through the setup process required to get up and run
 
 ### Database Setup
 
-1. Create a new database in mysql
+1. Create a new database in mysql 
 
 2. Fill the `.env` file you created with the database credentials
 
@@ -51,6 +51,8 @@ This section will guide you through the setup process required to get up and run
 4. Run `npm run migrate` to run the migrations and create the tables
 
 5. You can run `npm run migrate:undo` to undo the migrations
+
+6. You can find the E-R Diagram of the database here `https://dbdesigner.page.link/hC8x9k5cKSLE6ZpC7`
 
 
 ### Development

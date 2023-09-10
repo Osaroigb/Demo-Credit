@@ -7,10 +7,9 @@ exports.up = function(knex) {
     table.increments("id").primary();
     table.string("firstName").notNullable();
     table.string("lastName").notNullable();
-    table.string("email").notNullable();
+    table.string("email").notNullable().unique();
     table.string("password").notNullable();
     table.string("phoneNumber").notNullable();
-    table.bigInteger("accountNumber").unsigned().notNullable();
     table.timestamps(true, true);
   });
 };

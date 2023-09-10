@@ -19,8 +19,8 @@ export const validateSignupRequestBody = (
 payload: unknown
 ): {firstName: string; lastName: string; email: string; password: string; phoneNumber: string} => {
   const schema = passwordSchema.keys({
-    firstName: string.min(3).trim().required(),
-    lastName: string.min(3).trim().required(),
+    firstName: string.min(3).max(20).trim().required(),
+    lastName: string.min(3).max(20).trim().required(),
     email: string.email().trim().required(),
     phoneNumber: string.min(11).max(15).trim().required()
   });

@@ -1,5 +1,4 @@
 import { logger } from '../../utils/logger';
-import { accountNumberGenerator } from './auth.helper';
 import { ResponseProps, ProcessSignupParams } from './auth.interface';
 import { generateJwt, hashString, isHashValid } from '../../helpers/utilities';
 import { ConflictError, BadRequestError, UnAuthorizedError } from '../../errors';
@@ -8,48 +7,53 @@ const db = require("../../database/database.js");
 
 export const processSignup = async (data: ProcessSignupParams): Promise<ResponseProps> => {
   const { firstName, lastName, email, password, phoneNumber } = data;
-  const existingUser = await db("users").where("email", email);
 
-  if (existingUser.length > 0) {
-    throw new ConflictError('The Email already exists, please login!');
-  }
+  try {
+    // Start a database transaction
+    await db.transaction(async (trx: any) => {
+      // Check if the email already exists
+      const existingUser = await trx("users").where("email", email);
 
-  const userPassword = await hashString(password);
-  const accountNumber = await accountNumberGenerator();
+      if (existingUser.length > 0) {
+        throw new ConflictError('The Email already exists, please login!');
+      }
 
-  const newUser = {
-    firstName,
-    lastName,
-    email,
-    password: userPassword,
-    phoneNumber,
-    accountNumber
-  };
+      const userPassword = await hashString(password);
+      const user = {
+        firstName,
+        lastName,
+        email,
+        password: userPassword,
+        phoneNumber
+      };
 
-  logger.info('new user info');
-  logger.info(JSON.stringify(newUser));
-  
-  await db("users").insert(newUser).then(() => {
+      logger.info('new user info');
+      logger.info(JSON.stringify(user));
+
+      // Insert the new user into the 'users' table
+      await trx("users").insert(user);
+      const newUser = await trx("users").where("email", email);
+
+      // Create a wallet for the new user in the 'wallets' table
+      await trx("wallets").insert({ user_id: newUser[0].id, balance: 0.00 });
+    });
+
     logger.info('User created successfully!');
-  })
-  .catch((error: any) => {
+    return {
+      message: 'Signup successful!',
+      data: {
+        firstName,
+        lastName,
+        email,
+        phoneNumber
+      }
+    };
+  } catch (error) {
     logger.error('Error creating user:', error);
     throw new BadRequestError(`Error creating user: ${error}`);
-  })
-  .finally(() => {
+  } finally {
     db.destroy();
-  });
-
-  return {
-    message: 'Signup successful!',
-    data: {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      accountNumber
-    }
-  };
+  }
 };
 
 export const processLogin = async (email: string, password: string): Promise<ResponseProps> => {
@@ -91,7 +95,6 @@ export const processLogin = async (email: string, password: string): Promise<Res
         lastName: user[0].lastName,
         email: user[0].email,
         phone: user[0].phone,
-        accountNumber: user[0].accountNumber,
         createdAt: user[0].createdAt
       }
     }
