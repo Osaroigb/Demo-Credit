@@ -1,5 +1,6 @@
 import joi from 'joi';
 import { validate } from '../../utils/validator';
+import { TransactionType } from './wallet.constant';
 import { BadRequestError } from '../../errors/BadRequestError';
 
 const { object, string, number } = joi.types();
@@ -14,7 +15,7 @@ const validateAmount = (value: number): number => {
 };
 
 const transactionTypeSchema = object.keys({
-  type: string.valid('deposit', 'withdrawal', 'transfer').trim().required().lowercase(),
+  type: string.valid(TransactionType.DEPOSIT, TransactionType.WITHDRAWAL, TransactionType.TRANSFER).trim().required().lowercase(),
 });
 
 export const validateTransactionRequestBody = (payload: unknown): { type: string; amount: number } => {

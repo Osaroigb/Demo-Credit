@@ -20,7 +20,7 @@ export const isHashValid = async (plainText: string, hashText: string): Promise<
 export const generateJwt = (payload: { data?: { [key: string]: any }; sub?: string }): { token: string; expiryInSeconds: number } => {
   const privateKeyPath: any = process.env.OAUTH_PRIVATE_KEY || config.get('jwt.privateKey');
   const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
-  const expiryInSeconds = config.get('jwt.expiry');
+  const expiryInSeconds = Number(process.env.JWT_EXPIRY_IN_SECONDS) || config.get('jwt.expiry');
 
   const token = jwt.sign(payload, privateKey, {
     algorithm: 'RS256',

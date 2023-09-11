@@ -14,7 +14,7 @@ module.exports = {
       database: process.env.MYSQL_DATABASE_NAME,
     },
     pool: {
-      min: 1,
+      min: 2,
       max: 10
     },
     migrations: {

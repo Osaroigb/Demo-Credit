@@ -64,6 +64,7 @@ export const processLogin = async (email: string, password: string): Promise<Res
   }
 
   const isValidPassword = await isHashValid(password, user[0].password as string);
+  logger.info(isValidPassword);
 
   if (!isValidPassword) {
     throw new UnAuthorizedError('Password is incorrect!');
