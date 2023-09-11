@@ -1,6 +1,8 @@
 import { Server } from 'http';
 import { logger } from '../utils/logger';
 
+const db = require("../database/database.js");
+
 export const normalizePort = (val: string | number): number => {
   const port = parseInt(val.toString(), 10);
 
@@ -16,8 +18,6 @@ export const normalizePort = (val: string | number): number => {
 };
 
 export const gracefulShutdown = async (server: Server, message?: string): Promise<void> => {
-  const db = require("../database/database.js");
-
   try {
     if (message) logger.info(message);
 

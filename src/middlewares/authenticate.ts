@@ -3,12 +3,12 @@ import { logger } from '../utils/logger';
 import { UnAuthorizedError } from '../errors';
 import { verifyJwt } from '../helpers/utilities';
 
+const db = require("../database/database.js");
+
 export const authenticateUserJwt: RequestHandler = async (req: any, _res, next) => {
 
   try {
     const { authorization } = req.headers;
-    const db = require("../database/database.js");
-    const dbConnection = await db.getConnection();
 
     if (!authorization || typeof authorization !== 'string') {
       throw new UnAuthorizedError('Authorization token is required');
@@ -27,20 +27,19 @@ export const authenticateUserJwt: RequestHandler = async (req: any, _res, next) 
         throw new UnAuthorizedError('Invalid authorization token');
       }
 
-      const user = await dbConnection("users").where("id", +payload.sub);
+      const user = await db("users").where("id", +payload.sub).first();
 
-      if (user.length === 0) {
+      if (!user) {
         throw new UnAuthorizedError('Invalid authorization token');
       }
 
-      req.user = user[0];
+      req.user = user;
     } catch (error) {
       logger.error(`[middlewares.authenticate.authenticateUserJwt] => ${error}`);
       throw new UnAuthorizedError('Invalid authorization token');
-    } finally {
-      dbConnection.release();
-      next();
     }
+
+    next();
   } catch (error) {
     next(error);
   }

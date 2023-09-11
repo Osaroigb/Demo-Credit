@@ -10,7 +10,7 @@ exports.up = function(knex) {
     table.string("email").notNullable().unique();
     table.string("password").notNullable();
     table.string("phoneNumber").notNullable();
-    table.timestamps(true, false);
+    table.timestamp('created_at').defaultTo(knex.fn.now());
   });
 };
   

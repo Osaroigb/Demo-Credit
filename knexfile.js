@@ -14,9 +14,8 @@ module.exports = {
       database: process.env.MYSQL_DATABASE_NAME,
     },
     pool: {
-      min: 2,
-      max: 10,
-      idleTimeoutMillis: 15000, 
+      min: 0,
+      max: 20,
     },
     migrations: {
       directory: "./src/database/migrations",

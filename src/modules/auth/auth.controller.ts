@@ -16,9 +16,9 @@ export const signup: RequestHandler = async (req, res, next) => {
 
 export const login: RequestHandler = async (req, res, next) => {
   try {
-    const { email, password } = authValidation.validateLoginRequestBody(req.body);
+    const validData = authValidation.validateLoginRequestBody(req.body);
 
-    const result = await authService.processLogin(email, password);
+    const result = await authService.processLogin(validData);
     res.json(responseHandler(result.message, result.data));
   } catch (error) {
     next(error);

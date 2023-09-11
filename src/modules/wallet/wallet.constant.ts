@@ -5,6 +5,6 @@ export enum TransactionType {
 
 export enum TransactionGroup {
   DEPOSIT = 'deposit',
-  WITHDRAWAL = 'withdrawal',
+  WITHDRAW = 'withdraw',
   TRANSFER = 'transfer'
 };

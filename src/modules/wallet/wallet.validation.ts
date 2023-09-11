@@ -15,7 +15,7 @@ const validateAmount = (value: number): number => {
 };
 
 const transactionTypeSchema = object.keys({
-  type: string.valid(TransactionGroup.DEPOSIT, TransactionGroup.WITHDRAWAL, TransactionGroup.TRANSFER).trim().required().lowercase(),
+  type: string.valid(TransactionGroup.DEPOSIT, TransactionGroup.WITHDRAW, TransactionGroup.TRANSFER).trim().required().lowercase(),
 });
 
 export const validateTransactionRequestBody = (payload: unknown): { type: string; amount: number } => {
