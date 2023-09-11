@@ -7,9 +7,10 @@ exports.up = function(knex) {
     table.increments('id').primary();
     table.integer('user_id').unsigned().notNullable().references('id').inTable('users');
     table.integer('wallet_id').unsigned().notNullable().references('id').inTable('wallets');
-    table.enu('type', ['deposit', 'withdrawal', 'transfer']).notNullable();
+    table.enu('type', ['credit', 'debit']).notNullable();
     table.decimal('amount', 10, 2).notNullable();
-    table.timestamp('timestamp').defaultTo(knex.fn.now()); 
+    table.string("description").notNullable();
+    table.timestamp('transaction_time').defaultTo(knex.fn.now()); 
   });
 };
 

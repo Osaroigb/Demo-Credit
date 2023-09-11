@@ -39,6 +39,8 @@ folder structure
    │  └──────ConflictError.ts
    |  │
    │  └──────UnAuthorizedError.ts
+   |  │
+   │  └──────UnprocessableEntityError.ts
    |  |
    │  └──────index.ts
    |

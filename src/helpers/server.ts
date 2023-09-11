@@ -16,13 +16,17 @@ export const normalizePort = (val: string | number): number => {
 };
 
 export const gracefulShutdown = async (server: Server, message?: string): Promise<void> => {
+  const db = require("../database/database.js");
+
   try {
     if (message) logger.info(message);
 
+    db.destroy();
     server.close();
     process.exit();
   } catch (error: any) {
-    logger.info(error.message);
+    logger.error(error.message);
+    db.destroy();
     process.exit(1);
   }
 };

@@ -9,7 +9,7 @@ router.get('/', (_req, res) => res.send('Welcome to Demo Credit Wallet Service')
 router.post('/deposit', walletController.depositFunds);
 router.post('/withdraw', walletController.withdrawFunds);
 
-// router.post('/transfer', walletController.transferFunds);
-// router.get('/transactions', walletController.getTransactions);
+router.post('/transfer', walletController.transferFunds);
+router.get('/transactions', walletController.getTransactions);
 
 export default router;

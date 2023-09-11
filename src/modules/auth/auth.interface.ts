@@ -15,3 +15,8 @@ export interface ProcessSignupParams {
   password: string;
   phoneNumber: string; 
 };
+
+export interface ProcessLoginParams {
+  email: string; 
+  password: string;
+};

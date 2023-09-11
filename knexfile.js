@@ -15,7 +15,8 @@ module.exports = {
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
+      idleTimeoutMillis: 15000, 
     },
     migrations: {
       directory: "./src/database/migrations",
