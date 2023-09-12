@@ -1,18 +1,9 @@
 import joi from 'joi';
 import { validate } from '../../utils/validator';
+import { validateAmount }  from './wallet.helper';
 import { TransactionGroup } from './wallet.constant';
-import { BadRequestError } from '../../errors/BadRequestError';
 
 const { object, string, number } = joi.types();
-
-// Custom validation function for transaction amount
-const validateAmount = (value: number): number => {
-  if (value < 0) {
-    throw new BadRequestError('negavite transaction amount is not allowed!');
-  }
-
-  return value;
-};
 
 const transactionTypeSchema = object.keys({
   type: string.valid(TransactionGroup.DEPOSIT, TransactionGroup.WITHDRAW, TransactionGroup.TRANSFER).trim().required().lowercase(),

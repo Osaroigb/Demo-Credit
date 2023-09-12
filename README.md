@@ -48,13 +48,17 @@ This section will guide you through the setup process required to get up and run
 
 2. Fill the `.env` file you created with the database credentials
 
-3. Run `npm run migrate` to run the migrations and create the tables
+3. Run `npm run migrate:dev` to run the migrations and create the tables in the development database
 
-4. Run `npm run migrate:undo` to undo the migrations and drop the tables
+4. Run `npm run migrate:test` to run the migrations and create the tables in the test database
 
-5. You can run `npm run make:migration` to create migration files, e.g `npm run make:migration create_users_table`. This is an optional step since all the migration files you need are already available
+5. Run `npm run migrate:undo` to undo the migrations and drop the tables
 
-6. You can find the E-R Diagram of the database here `https://dbdesigner.page.link/hC8x9k5cKSLE6ZpC7`
+6. You can run `npm run make:migration` to create migration files, e.g `npm run make:migration create_users_table`. This is an optional step since all the migration files you need are already available
+
+7. Run `npm run seed` to populate a test user in the test database
+
+8. You can find the E-R Diagram of the database here `https://dbdesigner.page.link/hC8x9k5cKSLE6ZpC7`
 
 
 ### Development

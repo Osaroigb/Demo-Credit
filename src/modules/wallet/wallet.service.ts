@@ -1,9 +1,9 @@
 import { logger } from '../../utils/logger';
+import { db } from "../../database/database";
+import { validateAmount }  from './wallet.helper';
 import { TransactionType, TransactionGroup } from './wallet.constant';
-import { ResponseProps, ProcessTransactionParams, TransactionObject, ProcessTransferParams } from './wallet.interface';
 import { BadRequestError, ResourceNotFoundError, UnprocessableEntityError } from '../../errors';
-
-const db = require("../../database/database.js");
+import { ResponseProps, ProcessTransactionParams, TransactionObject, ProcessTransferParams } from './wallet.interface';
 
 export const processDepositFunds = async (data: ProcessTransactionParams, userId: number): Promise<ResponseProps> => {
   let finalBalance: number = 0;
@@ -18,7 +18,7 @@ export const processDepositFunds = async (data: ProcessTransactionParams, userId
   const { type, amount } = data;
     
   try {
-    // Start a database transaction
+    // Start a database transaction    
     await db.transaction(async (trx: any) => {
       // Check if the user exists
       const user = await trx("users").where("id", userId).first();
@@ -32,7 +32,8 @@ export const processDepositFunds = async (data: ProcessTransactionParams, userId
       const walletBalance = userWallet.balance;
 
       if (type === TransactionGroup.DEPOSIT) {
-        const newBalance = Number(walletBalance) + Number(amount);
+        const validatedAmount = validateAmount(Number(amount));
+        const newBalance = Number(walletBalance) + validatedAmount;
         finalBalance = newBalance;
 
         userTransaction = {
@@ -95,8 +96,10 @@ export const processWithdrawFunds = async (data: ProcessTransactionParams, userI
   
       if (type === TransactionGroup.WITHDRAW) {
 
-        if (Number(walletBalance) > Number(amount)) {
-          const newBalance = Number(walletBalance) - Number(amount);
+        const validatedAmount = validateAmount(Number(amount));
+
+        if (Number(walletBalance) > validatedAmount) {
+          const newBalance = Number(walletBalance) - validatedAmount;
           finalBalance = newBalance;
   
           userTransaction = {
@@ -163,8 +166,10 @@ export const processTransferFunds = async (data: ProcessTransferParams, userId: 
   
       if (type === TransactionGroup.TRANSFER) {
 
-        if (Number(senderBalance) > Number(amount)) {
-          const newSenderBalance = Number(senderBalance) - Number(amount);
+        const validatedAmount = validateAmount(Number(amount));
+
+        if (Number(senderBalance) > validatedAmount) {
+          const newSenderBalance = Number(senderBalance) - validatedAmount;
           finalBalance = newSenderBalance;
 
           const receiver = await trx("users").where("email", receiverEmail).first();
@@ -176,7 +181,7 @@ export const processTransferFunds = async (data: ProcessTransferParams, userId: 
 
           const receiverWallet = await trx("wallets").where("user_id", receiver.id).first();
           const receiverBalance = receiverWallet.balance;
-          const newReceiverBalance = Number(receiverBalance) + Number(amount);
+          const newReceiverBalance = Number(receiverBalance) + validatedAmount;
 
           senderTransaction = {
             user_id: sender.id,

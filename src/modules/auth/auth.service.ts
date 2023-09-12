@@ -1,9 +1,8 @@
 import { logger } from '../../utils/logger';
+import { db } from "../../database/database";
 import { generateJwt, hashString, isHashValid } from '../../helpers/utilities';
 import { ConflictError, BadRequestError, UnAuthorizedError } from '../../errors';
 import { ResponseProps, ProcessSignupParams, ProcessLoginParams } from './auth.interface';
-
-const db = require("../../database/database.js");
 
 export const processSignup = async (data: ProcessSignupParams): Promise<ResponseProps> => {
   const { firstName, lastName, email, password, phoneNumber } = data;

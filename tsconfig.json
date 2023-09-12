@@ -14,7 +14,7 @@
     "paths": {
       "*": ["node_modules/*", "src/types/*"]          /* Specify a set of entries that re-map imports to additional lookup locations. */
     },                                      
-    "types": ["node"],                                /* Specify type package names to be included without being referenced in a source file. */
+    "types": ["node", "jest"],                                /* Specify type package names to be included without being referenced in a source file. */
     
     /* JavaScript Support */
     "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the `checkJS` option to get errors from these files. */
@@ -28,6 +28,6 @@
     "strict": true,                                   /* Enable all strict type-checking options. */
     "strictPropertyInitialization": false,            /* Check for class properties that are declared but not set in the constructor. */
   },
-  "include": ["src/**/*.ts", "src/database/database.js"],
+  "include": ["src/**/*.ts", "src/database/database.ts"],
   "exclude": ["node_modules"]
 }

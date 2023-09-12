@@ -1,9 +1,8 @@
 import { RequestHandler } from 'express';
 import { logger } from '../utils/logger';
+import { db } from "../database/database";
 import { UnAuthorizedError } from '../errors';
 import { verifyJwt } from '../helpers/utilities';
-
-const db = require("../database/database.js");
 
 export const authenticateUserJwt: RequestHandler = async (req: any, _res, next) => {
 

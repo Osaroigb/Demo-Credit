@@ -1,7 +1,6 @@
 import { Server } from 'http';
 import { logger } from '../utils/logger';
-
-const db = require("../database/database.js");
+import { db } from "../database/database";
 
 export const normalizePort = (val: string | number): number => {
   const port = parseInt(val.toString(), 10);

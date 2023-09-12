@@ -1,11 +1,12 @@
-import 'dotenv/config';
 import cors from 'cors';
 import morgan from 'morgan';
+import * as dotenv from 'dotenv';
 import compression from 'compression';
 import { handleError } from './helpers/errorHandler';
 import { initiateModuleRoutes } from './modules/routes';
 import express, { Request, Response, NextFunction } from 'express';
 
+dotenv.config();
 const app = express();
 
 app.use(cors());
