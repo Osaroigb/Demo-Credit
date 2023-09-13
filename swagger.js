@@ -7,9 +7,9 @@ const options = {
   swaggerDefinition: {
     openapi: '3.0.0',
     info: {
-      title: 'Demo Credit',
+      title: 'NexaPay Wallet',
       version: '1.0.0',
-      description: 'Documentation for Demo Credit API',
+      description: 'Documentation for NexaPay Wallet API',
     },
     servers: [
       {

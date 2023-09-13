@@ -1,7 +1,7 @@
 {
-  "name": "demo-credit",
+  "name": "nexapay-wallet",
   "version": "1.0.0",
-  "description": "Demo Credit is a mobile lending app that has wallet functionality. It is used by borrowers who need a wallet to receive the loans they have been granted and also send the money for repayments.",
+  "description": "NexaPay Wallet is a mobile lending app that has wallet functionality. It is used by borrowers who need a wallet to receive the loans they have been granted and also send the money for repayments.",
   "main": "index.js",
   "engineStrict": true,
   "engines": {
@@ -27,14 +27,14 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Osaroigb/demo-credit.git"
+    "url": "git+ssh://git@github.com/Osaroigb/nexapay-wallet.git"
   },
   "author": "Osaro Igbinovia",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Osaroigb/demo-credit/issues"
+    "url": "https://github.com/Osaroigb/nexapay-wallet/issues"
   },
-  "homepage": "https://github.com/Osaroigb/demo-credit#readme",
+  "homepage": "https://github.com/Osaroigb/nexapay-wallet#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "compression": "^1.7.4",

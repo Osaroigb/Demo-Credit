@@ -5,7 +5,7 @@ import { authenticateUserJwt } from '../../middlewares/authenticate';
 const router = Router();
 router.use(authenticateUserJwt);
 
-router.get('/', (_req, res) => res.send('Welcome to Demo Credit Wallet Service'));
+router.get('/', (_req, res) => res.send('Welcome to NexaPay Wallet Service'));
 router.post('/deposit', walletController.depositFunds);
 router.post('/withdraw', walletController.withdrawFunds);
 

@@ -25,7 +25,7 @@ export const generateJwt = (payload: { data?: { [key: string]: any }; sub?: stri
   const token = jwt.sign(payload, privateKey, {
     algorithm: 'RS256',
     audience: config.get('baseUrl'),
-    issuer: 'DemoCredit',
+    issuer: 'NexaPay',
     expiresIn: expiryInSeconds
   });
 
@@ -36,6 +36,6 @@ export const verifyJwt = (jwtToken: string): string | jwt.JwtPayload => {
   const publicKeyPath: any = process.env.OAUTH_PUBLIC_KEY || config.get('jwt.publicKey');
   const publicKey = fs.readFileSync(publicKeyPath, 'utf8');
   
-  const decoded = jwt.verify(jwtToken, publicKey, { audience: config.get('baseUrl'), issuer: 'DemoCredit', algorithms: ['RS256'] });
+  const decoded = jwt.verify(jwtToken, publicKey, { audience: config.get('baseUrl'), issuer: 'NexaPay', algorithms: ['RS256'] });
   return decoded;
 };

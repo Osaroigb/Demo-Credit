@@ -2,14 +2,14 @@ import { Router } from 'express';
 import * as authController from './auth.controller';
 
 const router = Router();
-router.get('/', (_req, res) => res.send('Welcome to Demo Credit Auth Service'));
+router.get('/', (_req, res) => res.send('Welcome to NexaPay Auth Service'));
 
 /**
  * @swagger
  *  /v1/auth/signup:
  *   post:
  *     summary: Login a user
- *     description: Log a user into Demo Credit Service
+ *     description: Log a user into NexaPay Wallet Service
  *     requestBody:
  *       required: true
  *       content:
@@ -32,7 +32,7 @@ router.post('/login', authController.login);
  *  /v1/auth/login:
  *   post:
  *     summary: Signup a new user
- *     description: Register a new user to Demo Credit Service
+ *     description: Register a new user to NexaPay Wallet Service
  *     requestBody:
  *       required: true
  *       content:

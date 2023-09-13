@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
-app.get('/', (_req, res) => res.send('Welcome to Demo Credit API'));
+app.get('/', (_req, res) => res.send('Welcome to NexaPay Wallet API'));
 
 initiateModuleRoutes(app);
 

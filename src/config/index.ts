@@ -43,7 +43,7 @@ const config = convict({
       format: 'port'
     },
     name: {
-      default: 'democredit',
+      default: 'nexapay',
       doc: 'Mysql database name',
       env: 'MYSQL_DATABASE_NAME',
       nullable: false,
