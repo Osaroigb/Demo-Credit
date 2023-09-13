@@ -6,7 +6,7 @@ router.get('/', (_req, res) => res.send('Welcome to NexaPay Auth Service'));
 
 /**
  * @swagger
- *  /v1/auth/signup:
+ *  /v1/auth/login:
  *   post:
  *     summary: Login a user
  *     description: Log a user into NexaPay Wallet Service
@@ -29,7 +29,7 @@ router.post('/login', authController.login);
 
 /**
  * @swagger
- *  /v1/auth/login:
+ *  /v1/auth/signup:
  *   post:
  *     summary: Signup a new user
  *     description: Register a new user to NexaPay Wallet Service
