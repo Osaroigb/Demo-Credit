@@ -22,7 +22,7 @@ payload: unknown
     firstName: string.min(3).max(20).trim().required(),
     lastName: string.min(3).max(20).trim().required(),
     email: string.email().trim().required(),
-    phoneNumber: string.min(11).max(15).trim().required()
+    phoneNumber: string.trim().required().pattern(/^(?:\+234|0)[789]\d{9}$/) // Regex pattern for Nigerian phone numbers
   });
 
   return validate(payload, schema);

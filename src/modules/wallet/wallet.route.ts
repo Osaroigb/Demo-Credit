@@ -10,6 +10,7 @@ router.post('/deposit', walletController.depositFunds);
 router.post('/withdraw', walletController.withdrawFunds);
 
 router.post('/transfer', walletController.transferFunds);
-router.get('/transactions', walletController.getTransactions);
+router.get('/transactions/:walletId', walletController.getTransactionHistory);
+router.get('/balance/:walletId', walletController.getWalletBalance);
 
 export default router;

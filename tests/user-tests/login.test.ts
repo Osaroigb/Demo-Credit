@@ -9,12 +9,10 @@ import { db } from "../../src/database/database";
 
 const testDB = knex(knexConfig["test"]);
 
-describe('User Deposit Funds', () => {
-  let login: any;
+describe('User Logging In', () => {
 
   beforeAll(async () => {
     Model.knex(testDB);
-    login = await loginUser();
   });
 
   afterAll(() => {
@@ -22,16 +20,15 @@ describe('User Deposit Funds', () => {
     testDB.destroy();
   });
   
-  test('should successfully deposit funds', async () => {
+  test('should successfully login user', async () => {
     const payload = {
-      type: 'deposit',
-      amount: 100,
+      email: 'test@gmail.com',
+      password: 'Testing123_',
     };
   
     await request(app)
-      .post('/v1/wallet/deposit')
+      .post('/v1/auth/login')
       .send(payload)
-      .set('Authorization', `Bearer ${login.bearerToken}`)
       .expect(200)
       .expect((res: any) => {
         assert(res.body.hasOwnProperty('success'));
@@ -40,16 +37,15 @@ describe('User Deposit Funds', () => {
     });
   });
 
-  test('should handle wrong transaction type', async () => {
+  test('should handle invalid email', async () => {
     const payload = {
-      type: 'withdraw',
-      amount: 100,
+      email: 'testgmailco',
+      password: 'Testing123_',
     };
   
     await request(app)
-      .post('/v1/wallet/deposit')
+      .post('/v1/auth/login')
       .send(payload)
-      .set('Authorization', `Bearer ${login.bearerToken}`)
       .expect(400)
       .expect((res: any) => {
         assert(res.body.hasOwnProperty('success'));
@@ -58,34 +54,15 @@ describe('User Deposit Funds', () => {
     });
   });
 
-  test('should handle invalid transaction amount', async () => {
+  test('should handle wrong email', async () => {
     const payload = {
-      type: 'deposit',
-      amount: -100,
+      email: 'johndoe@gmail.com',
+      password: 'Testing123_',
     };
   
     await request(app)
-      .post('/v1/wallet/deposit')
+      .post('/v1/auth/login')
       .send(payload)
-      .set('Authorization', `Bearer ${login.bearerToken}`)
-      .expect(400)
-      .expect((res: any) => {
-        assert(res.body.hasOwnProperty('success'));
-        assert(res.body.hasOwnProperty('message'));
-        assert(res.body.hasOwnProperty('data'));
-    });
-  });
-
-  test('should handle invalid bearer token', async () => {
-    const payload = {
-      type: 'deposit',
-      amount: 100,
-    };
-  
-    await request(app)
-      .post('/v1/wallet/deposit')
-      .send(payload)
-      .set('Authorization', 'Bearer sa90asankaaas')
       .expect(401)
       .expect((res: any) => {
         assert(res.body.hasOwnProperty('success'));
@@ -94,13 +71,37 @@ describe('User Deposit Funds', () => {
     });
   });
 
-  const loginUser = async () => {
-    const data = {
-      email: 'test@gmail.com',
-      password: 'Testing123_',
+  test('should handle invalid/weak password', async () => {
+    const payload = {
+      "email": "test@gmail.com",
+      "password": "test",
     };
-    
-    const res = await request(app).post('/v1/auth/login').send(data);
-    return { bearerToken: res.body.data.auth.token };
-  };
+  
+    await request(app)
+      .post('/v1/auth/login')
+      .send(payload)
+      .expect(400)
+      .expect((res: any) => {
+        assert(res.body.hasOwnProperty('success'));
+        assert(res.body.hasOwnProperty('message'));
+        assert(res.body.hasOwnProperty('data'));
+    });
+  });
+
+  test('should handle wrong password', async () => {
+    const payload = {
+      "email": "test@gmail.com",
+      "password": "test9230d9",
+    };
+  
+    await request(app)
+      .post('/v1/auth/login')
+      .send(payload)
+      .expect(401)
+      .expect((res: any) => {
+        assert(res.body.hasOwnProperty('success'));
+        assert(res.body.hasOwnProperty('message'));
+        assert(res.body.hasOwnProperty('data'));
+    });
+  });
 });

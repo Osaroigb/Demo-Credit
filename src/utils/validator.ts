@@ -1,5 +1,6 @@
 import joi from 'joi';
 import { BadRequestError } from '../errors';
+import { logger } from './logger';
 
 export const validate = <T>(payload: { [key: string]: any } | unknown, schema: joi.ObjectSchema<any>): T => {
   const { value, error } = schema.validate(payload, { abortEarly: false });
@@ -12,6 +13,7 @@ export const validate = <T>(payload: { [key: string]: any } | unknown, schema: j
       path: errorDetail.path.join('.')
     }));
 
+    logger.error('Invalid request data', formattedErrorDetails);
     throw new BadRequestError('Invalid request data', undefined, formattedErrorDetails);
   }
   return value;

@@ -9,7 +9,7 @@ import { db } from "../../src/database/database";
 
 const testDB = knex(knexConfig["test"]);
 
-describe('User Deposit Funds', () => {
+describe('Get Transaction History', () => {
   let login: any;
 
   beforeAll(async () => {
@@ -22,15 +22,10 @@ describe('User Deposit Funds', () => {
     testDB.destroy();
   });
   
-  test('should successfully deposit funds', async () => {
-    const payload = {
-      type: 'deposit',
-      amount: 100,
-    };
+  test('should successfully get transaction history', async () => {
   
     await request(app)
-      .post('/v1/wallet/deposit')
-      .send(payload)
+      .get('/v1/wallet/transactions/1')
       .set('Authorization', `Bearer ${login.bearerToken}`)
       .expect(200)
       .expect((res: any) => {
@@ -40,17 +35,12 @@ describe('User Deposit Funds', () => {
     });
   });
 
-  test('should handle wrong transaction type', async () => {
-    const payload = {
-      type: 'withdraw',
-      amount: 100,
-    };
+  test('should handle invalid wallet ID', async () => {
   
     await request(app)
-      .post('/v1/wallet/deposit')
-      .send(payload)
+      .get('/v1/wallet/transactions/10')
       .set('Authorization', `Bearer ${login.bearerToken}`)
-      .expect(400)
+      .expect(404)
       .expect((res: any) => {
         assert(res.body.hasOwnProperty('success'));
         assert(res.body.hasOwnProperty('message'));
@@ -58,17 +48,12 @@ describe('User Deposit Funds', () => {
     });
   });
 
-  test('should handle invalid transaction amount', async () => {
-    const payload = {
-      type: 'deposit',
-      amount: -100,
-    };
+  test('should handle valid wallet but unauthorized access', async () => {
   
     await request(app)
-      .post('/v1/wallet/deposit')
-      .send(payload)
+      .get('/v1/wallet/transactions/2')
       .set('Authorization', `Bearer ${login.bearerToken}`)
-      .expect(400)
+      .expect(401)
       .expect((res: any) => {
         assert(res.body.hasOwnProperty('success'));
         assert(res.body.hasOwnProperty('message'));
@@ -77,14 +62,9 @@ describe('User Deposit Funds', () => {
   });
 
   test('should handle invalid bearer token', async () => {
-    const payload = {
-      type: 'deposit',
-      amount: 100,
-    };
   
     await request(app)
-      .post('/v1/wallet/deposit')
-      .send(payload)
+      .get('/v1/wallet/transactions/1')
       .set('Authorization', 'Bearer sa90asankaaas')
       .expect(401)
       .expect((res: any) => {

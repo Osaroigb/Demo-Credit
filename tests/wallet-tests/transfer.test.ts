@@ -136,6 +136,25 @@ describe('User Transfer Funds', () => {
     });
   });
 
+  test('should handle invalid transfer to yourself', async () => {
+    const payload = {
+      type: 'transfer',
+      amount: 100,
+      receiverEmail: 'test@gmail.com'
+    };
+  
+    await request(app)
+      .post('/v1/wallet/transfer')
+      .send(payload)
+      .set('Authorization', `Bearer ${login.bearerToken}`)
+      .expect(409)
+      .expect((res: any) => {
+        assert(res.body.hasOwnProperty('success'));
+        assert(res.body.hasOwnProperty('message'));
+        assert(res.body.hasOwnProperty('data'));
+    });
+  });
+
   const loginUser = async () => {
     const data = {
       email: 'test@gmail.com',

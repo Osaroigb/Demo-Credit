@@ -2,8 +2,9 @@ import { logger } from '../../utils/logger';
 import { db } from "../../database/database";
 import { validateAmount }  from './wallet.helper';
 import { TransactionType, TransactionGroup } from './wallet.constant';
-import { BadRequestError, ResourceNotFoundError, UnprocessableEntityError } from '../../errors';
+import { BadRequestError, ConflictError, ResourceNotFoundError, UnAuthorizedError, UnprocessableEntityError } from '../../errors';
 import { ResponseProps, ProcessTransactionParams, TransactionObject, ProcessTransferParams } from './wallet.interface';
+import { userInfo } from 'os';
 
 export const processDepositFunds = async (data: ProcessTransactionParams, userId: number): Promise<ResponseProps> => {
   let finalBalance: number = 0;
@@ -169,8 +170,6 @@ export const processTransferFunds = async (data: ProcessTransferParams, userId: 
         const validatedAmount = validateAmount(Number(amount));
 
         if (Number(senderBalance) > validatedAmount) {
-          const newSenderBalance = Number(senderBalance) - validatedAmount;
-          finalBalance = newSenderBalance;
 
           const receiver = await trx("users").where("email", receiverEmail).first();
 
@@ -178,6 +177,14 @@ export const processTransferFunds = async (data: ProcessTransferParams, userId: 
             logger.error('Receiver account not found!');
             throw new ResourceNotFoundError('Receiver account not found!');
           }
+
+          if (sender.email === receiver.email) {
+            logger.error('You can\'t transfer money to yourself! please make a deposit');
+            throw new ConflictError('You can\'t transfer money to yourself! please make a deposit');
+          }
+
+          const newSenderBalance = Number(senderBalance) - validatedAmount;
+          finalBalance = newSenderBalance;
 
           const receiverWallet = await trx("wallets").where("user_id", receiver.id).first();
           const receiverBalance = receiverWallet.balance;
@@ -231,7 +238,7 @@ export const processTransferFunds = async (data: ProcessTransferParams, userId: 
   }
 };
 
-export const processGetTransactions = async (userId: number): Promise<ResponseProps> => {
+export const processGetTransactionHistory = async (userId: number, walletId: number): Promise<ResponseProps> => {
   try {
     const user = await db("users").where("id", userId).first();
 
@@ -240,18 +247,70 @@ export const processGetTransactions = async (userId: number): Promise<ResponsePr
       throw new ResourceNotFoundError('User account not found!');
     }
 
-    // TODO request for wallet_id as path parameter
-    const transactions = await db("transactions").where("user_id", user.id);
+    const wallet = await db("wallets").where("id", walletId).first();
 
-    if (transactions.length === 0) {
-      logger.error("This user hasn't made any transactions!");
-      throw new ResourceNotFoundError("This user hasn't made any transactions!");
+    if (!wallet) {
+      logger.error('User wallet not found!');
+      throw new ResourceNotFoundError('User wallet not found!');
+    }
+
+    const transactions = await db("transactions").where({ "wallet_id": walletId });
+
+    if (transactions.length > 0 && user && userId !== walletId) {
+      logger.error('You aren\'t authorized to view these transactions');
+      throw new UnAuthorizedError('You aren\'t authorized to view these transactions');
+    }
+
+    if (transactions.length === 0 && user && userId !== walletId) {
+      logger.error('You aren\'t authorized to view these transactions');
+      throw new UnAuthorizedError('You aren\'t authorized to view these transactions');
+    }
+
+    if (transactions.length === 0 && user && userId === walletId) {
+      logger.info("This user hasn't made any transactions!");
+
+      return {
+        message: "This user hasn't made any transactions!",
+        data: transactions
+      };
     }
 
     logger.info('Transactions retrieved successfully!');
     return {
       message: 'Transactions retrieved successfully!',
       data: transactions
+    };
+  } catch (error: any) {
+    logger.error('Error fetching user transactions:', error);
+    throw new BadRequestError(`Error fetching user transactions: ${error}`, error);
+  }
+};
+
+export const processGetWalletBalance = async (userId: number, walletId: number): Promise<ResponseProps> => {
+  try {
+    const user = await db("users").where("id", userId).first();
+
+    if (!user) {
+      logger.error('User account not found!');
+      throw new ResourceNotFoundError('User account not found!');
+    }
+
+    const wallet = await db("wallets").where({ "id": walletId }).first();
+
+    if (!wallet) {
+      logger.error('User wallet not found!');
+      throw new ResourceNotFoundError('User wallet not found!');
+    }
+
+    if (user && wallet && userId !== walletId) {
+      logger.error('You aren\'t authorized to view this wallet');
+      throw new UnAuthorizedError('You aren\'t authorized to view this wallet');
+    }
+
+    logger.info('User wallet retrieved successfully!');
+    return {
+      message: 'User wallet retrieved successfully!',
+      data: wallet
     };
   } catch (error: any) {
     logger.error('Error fetching user transactions:', error);

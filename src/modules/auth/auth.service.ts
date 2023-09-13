@@ -48,9 +48,9 @@ export const processSignup = async (data: ProcessSignupParams): Promise<Response
         phoneNumber
       }
     };
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error creating user:', error);
-    throw new BadRequestError(`Error creating user: ${error}`);
+    throw new BadRequestError(`Error creating user: ${error}`, error);
   } 
 };
 
@@ -103,8 +103,8 @@ export const processLogin = async (data: ProcessLoginParams): Promise<ResponsePr
         }
       }
     };
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error login user:', error);
-    throw new BadRequestError(`Error login user: ${error}`);
+    throw new BadRequestError(`Error login user: ${error}`, error);
   } 
 };
