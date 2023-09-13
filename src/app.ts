@@ -6,8 +6,12 @@ import { handleError } from './helpers/errorHandler';
 import { initiateModuleRoutes } from './modules/routes';
 import express, { Request, Response, NextFunction } from 'express';
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('../swagger');
+
 dotenv.config();
 const app = express();
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 app.use(cors());
 app.use(compression());

@@ -13,6 +13,7 @@
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
+    "generate-swagger": "node ./swagger.js",
     "lint": "eslint --ext .ts,.js src/**",
     "lint-fix": "npm run lint -- --fix",
     "prettier": "prettier \"**/*.+(ts|js)\"",
