@@ -62,9 +62,9 @@ export const processDepositFunds = async (data: ProcessTransactionParams, userId
         date: new Date().toLocaleString()
       }
     };
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error depositing funds:', error);
-    throw new BadRequestError(`Error depositing funds: ${error}`);
+    throw new BadRequestError(`Error depositing funds: ${error}`, error);
   } 
 };
 
@@ -132,9 +132,9 @@ export const processWithdrawFunds = async (data: ProcessTransactionParams, userI
         date: new Date().toLocaleString()
       }
     };
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error withdrawing funds:', error);
-    throw new BadRequestError(`Error withdrawing funds: ${error}`);
+    throw new BadRequestError(`Error withdrawing funds: ${error}`, error);
   }
 };
 
@@ -225,9 +225,9 @@ export const processTransferFunds = async (data: ProcessTransferParams, userId: 
         date: new Date().toLocaleString()
       }
     };
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error transferring funds:', error);
-    throw new BadRequestError(`Error transferring funds: ${error}`);
+    throw new BadRequestError(`Error transferring funds: ${error}`, error);
   }
 };
 
@@ -240,6 +240,7 @@ export const processGetTransactions = async (userId: number): Promise<ResponsePr
       throw new ResourceNotFoundError('User account not found!');
     }
 
+    // TODO request for wallet_id as path parameter
     const transactions = await db("transactions").where("user_id", user.id);
 
     if (transactions.length === 0) {
@@ -252,8 +253,8 @@ export const processGetTransactions = async (userId: number): Promise<ResponsePr
       message: 'Transactions retrieved successfully!',
       data: transactions
     };
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error fetching user transactions:', error);
-    throw new BadRequestError(`Error fetching user transactions: ${error}`);
+    throw new BadRequestError(`Error fetching user transactions: ${error}`, error);
   }
 };

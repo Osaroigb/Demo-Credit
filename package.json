@@ -11,7 +11,7 @@
   "scripts": {
     "start": "ts-node-dev --files --respawn ./src/server.ts",
     "build": "tsc",
-    "test": "jest --forceExit",
+    "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint --ext .ts,.js src/**",
     "lint-fix": "npm run lint -- --fix",

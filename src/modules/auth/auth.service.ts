@@ -84,6 +84,7 @@ export const processLogin = async (data: ProcessLoginParams): Promise<ResponsePr
       sub: user.id.toString()
     });
 
+    logger.info('Login successful!');
     return {
       canLogin: true,
       message: 'Login successful!',
