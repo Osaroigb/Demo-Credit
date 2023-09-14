@@ -35,7 +35,7 @@ describe('Get Wallet Balance', () => {
     });
   });
 
-  test('should handle invalid wallet ID', async () => {
+  test('should handle wrong wallet ID that doesn\'t exist', async () => {
   
     await request(app)
       .get('/v1/wallet/balance/10')
@@ -67,6 +67,19 @@ describe('Get Wallet Balance', () => {
       .get('/v1/wallet/balance/1')
       .set('Authorization', 'Bearer sa90asankaaas')
       .expect(401)
+      .expect((res: any) => {
+        assert(res.body.hasOwnProperty('success'));
+        assert(res.body.hasOwnProperty('message'));
+        assert(res.body.hasOwnProperty('data'));
+    });
+  });
+
+  test('should handle invalid wallet ID that\'s not a number', async () => {
+  
+    await request(app)
+      .get('/v1/wallet/balance/test')
+      .set('Authorization', `Bearer ${login.bearerToken}`)
+      .expect(422)
       .expect((res: any) => {
         assert(res.body.hasOwnProperty('success'));
         assert(res.body.hasOwnProperty('message'));

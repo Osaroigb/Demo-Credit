@@ -2,12 +2,11 @@ import cors from 'cors';
 import morgan from 'morgan';
 import * as dotenv from 'dotenv';
 import compression from 'compression';
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerSpecs from '../swagger';
 import { handleError } from './helpers/errorHandler';
 import { initiateModuleRoutes } from './modules/routes';
 import express, { Request, Response, NextFunction } from 'express';
-
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpecs = require('../swagger');
 
 dotenv.config();
 const app = express();

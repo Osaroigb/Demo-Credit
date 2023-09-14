@@ -247,6 +247,11 @@ export const processGetTransactionHistory = async (userId: number, walletId: num
       throw new ResourceNotFoundError('User account not found!');
     }
 
+    if (!Number(walletId)) {
+      logger.error('Wallet ID must be a number!');
+      throw new UnprocessableEntityError('Wallet ID must be a number!');
+    }
+
     const wallet = await db("wallets").where("id", walletId).first();
 
     if (!wallet) {
@@ -293,6 +298,11 @@ export const processGetWalletBalance = async (userId: number, walletId: number):
     if (!user) {
       logger.error('User account not found!');
       throw new ResourceNotFoundError('User account not found!');
+    }
+
+    if (!Number(walletId)) {
+      logger.error('Wallet ID must be a number!');
+      throw new UnprocessableEntityError('Wallet ID must be a number!');
     }
 
     const wallet = await db("wallets").where({ "id": walletId }).first();
