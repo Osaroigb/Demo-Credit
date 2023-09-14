@@ -1,8 +1,16 @@
+import fs from 'fs';
 import config from '../config';
 import jsonStringify from 'safe-json-stringify';
 import { createLogger, transports, format } from 'winston';
 
 const timestampDefinition = { format: 'YYYY-MM-DDTHH:mm:ss.SSS Z' };
+
+// Check if the logs directory exists, and create it if not
+const logDir = 'logs';
+
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
 
 const logger = createLogger({
   level: 'info',
