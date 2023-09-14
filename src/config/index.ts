@@ -99,6 +99,4 @@ const config = convict({
   },
 });
 
-// Perform validation
-config.validate({ allowed: 'strict' });
 export default config;

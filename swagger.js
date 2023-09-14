@@ -1,6 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const options = {

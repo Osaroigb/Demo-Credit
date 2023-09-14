@@ -1,14 +1,14 @@
+import 'dotenv/config';
 import cors from 'cors';
 import morgan from 'morgan';
-import * as dotenv from 'dotenv';
 import compression from 'compression';
-import swaggerUi from 'swagger-ui-express';
-import * as swaggerSpecs from '../swagger';
 import { handleError } from './helpers/errorHandler';
 import { initiateModuleRoutes } from './modules/routes';
 import express, { Request, Response, NextFunction } from 'express';
 
-dotenv.config();
+const swaggerSpecs = require('../swagger');
+const swaggerUi = require('swagger-ui-express');
+
 const app = express();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
