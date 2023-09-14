@@ -18,7 +18,6 @@
     "lint-fix": "npm run lint -- --fix",
     "prettier": "prettier \"**/*.+(ts|js)\"",
     "check-types": "tsc --noEmit",
-    "migrate:prod": "knex migrate:latest --env=production",
     "migrate:dev": "knex migrate:latest --env=development",
     "migrate:test": "knex migrate:latest --env=test",
     "migrate:undo": "knex migrate:rollback",
