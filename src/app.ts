@@ -49,4 +49,4 @@ process.on('unhandledRejection', (reason: Error) => {
   handleError(reason);
 });
 
-export default app;
+module.exports = app;
