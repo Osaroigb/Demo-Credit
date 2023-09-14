@@ -15,7 +15,7 @@ const config = convict({
     format: 'port'
   },
   baseUrl: {
-    default: "https://osaro-igbinovia-lendsqr-be-test.vercel.app", 
+    default: "http://161.35.172.241:3300", 
     doc: 'App base url',
     env: 'APP_BASE_URL',
     nullable: false,
