@@ -7,8 +7,9 @@ const stoppable = require('stoppable');
 // import http from 'http';
 // import config from './config';
 // import stoppable from 'stoppable';
+// import { gracefulShutdown, handleError, normalizePort, onListening } from './helpers/server';
 
-import { gracefulShutdown, handleError, normalizePort, onListening } from './helpers/server';
+const { gracefulShutdown, handleError, normalizePort, onListening } = require('./helpers/server');
 
 const port = Number(process.env.APP_PORT) || config.get('port') || normalizePort(3000);
 app.set('port', port);
