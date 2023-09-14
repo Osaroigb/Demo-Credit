@@ -10,8 +10,12 @@ const swaggerSpecs = require('../swagger');
 const swaggerUi = require('swagger-ui-express');
 
 const app = express();
+
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css";
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, { customCssUrl: CSS_URL }));
+const options = { customCssUrl: CSS_URL, customSiteTitle: "NexaPay Wallet" };
+
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerSpecs, options));
 
 app.use(cors());
 app.use(compression());
