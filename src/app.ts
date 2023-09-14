@@ -10,7 +10,8 @@ const swaggerSpecs = require('../swagger');
 const swaggerUi = require('swagger-ui-express');
 
 const app = express();
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, { customCssUrl: CSS_URL }));
 
 app.use(cors());
 app.use(compression());
