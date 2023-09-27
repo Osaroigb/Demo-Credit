@@ -2,9 +2,8 @@ import { logger } from '../../utils/logger';
 import { db } from "../../database/database";
 import { validateAmount }  from './wallet.helper';
 import { TransactionType, TransactionGroup } from './wallet.constant';
-import { BadRequestError, ConflictError, ResourceNotFoundError, UnAuthorizedError, UnprocessableEntityError } from '../../errors';
 import { ResponseProps, ProcessTransactionParams, TransactionObject, ProcessTransferParams } from './wallet.interface';
-import { userInfo } from 'os';
+import { BadRequestError, ConflictError, ResourceNotFoundError, UnAuthorizedError, UnprocessableEntityError } from '../../errors';
 
 export const processDepositFunds = async (data: ProcessTransactionParams, userId: number): Promise<ResponseProps> => {
   let finalBalance: number = 0;
