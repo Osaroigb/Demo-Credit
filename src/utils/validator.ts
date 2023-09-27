@@ -1,6 +1,6 @@
 import joi from 'joi';
-import { BadRequestError } from '../errors';
 import { logger } from './logger';
+import { BadRequestError } from '../errors';
 
 export const validate = <T>(payload: { [key: string]: any } | unknown, schema: joi.ObjectSchema<any>): T => {
   const { value, error } = schema.validate(payload, { abortEarly: false });
